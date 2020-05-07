@@ -1,0 +1,23 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix taotao
+gazelle(name = "gazelle")
+
+#下面是gazell生成，不需要自己定义
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "taotao",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//handler:go_default_library",
+        "@com_github_json_iterator_go//:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "taotao",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)
